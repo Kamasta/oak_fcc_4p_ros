@@ -66,7 +66,7 @@ target_link_libraries(${PROJECT_NAME}_test
 target_include_directories(${PROJECT_NAME}_test PUBLIC
   ${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
-  /dependencies/depthai-cor/build/install/include
+  /dependencies/depthai-core/build/install/include
   /dependencies/XLink/build/install/include
 )
 
