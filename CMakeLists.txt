@@ -29,6 +29,7 @@ catkin_package(
 
 
 find_package(spdlog REQUIRED)
+find_package(fmt REQUIRED)
 
 #Find opencv
 find_package(OpenCV 4.5 REQUIRED )
@@ -46,6 +47,7 @@ link_directories(
   /dependencies/depthai-core/build/
   /dependencies/XLink/build
   /dependencies/spdlog-1.8.2/build
+  /dependencies/fmt-7.1.3/build
 )
 
 add_executable(${PROJECT_NAME}_test test.cpp)
