@@ -31,7 +31,7 @@ catkin_package(
 find_package(spdlog REQUIRED)
 
 #Find opencv
-find_package(OpenCV 4.8 REQUIRED )
+find_package(OpenCV 4.5 REQUIRED )
 # find_package(Sanitizers)
 
 #Find depthai SDK
