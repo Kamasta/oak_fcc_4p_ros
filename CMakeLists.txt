@@ -29,10 +29,9 @@ catkin_package(
 
 
 find_package(spdlog REQUIRED)
-find_package(fmt REQUIRED)
 
 #Find opencv
-find_package(OpenCV 4.2 REQUIRED )
+find_package(OpenCV 4.8 REQUIRED )
 # find_package(Sanitizers)
 
 #Find depthai SDK
@@ -44,10 +43,9 @@ include_directories(
 )
 
 link_directories(
-  /root/3rd_party/depthai-core-v2.26.0/build/
-  /root/3rd_party/XLink/build
-  /root/3rd_party/spdlog-1.8.2/build
-  /root/3rd_party/fmt-7.1.3/build
+  /dependencies/depthai-core/build/
+  /dependencies/XLink/build
+  /dependencies/spdlog-1.8.2/build
 )
 
 add_executable(${PROJECT_NAME}_test test.cpp)
@@ -66,8 +64,8 @@ target_link_libraries(${PROJECT_NAME}_test
 target_include_directories(${PROJECT_NAME}_test PUBLIC
   ${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
-  /root/3rd_party/depthai-core-v2.26.0/build/install/include
-  /root/3rd_party/XLink/build/install/include
+  /dependencies/depthai-cor/build/install/include
+  /dependencies/XLink/build/install/include
 )
 
 add_library(${PROJECT_NAME}_lib STATIC
