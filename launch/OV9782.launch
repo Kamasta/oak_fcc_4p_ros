@@ -1,15 +1,15 @@
 <launch>
-    <arg name="fps" default = "10" />
+    <arg name="fps" default = "20" />
     <arg name="rgb" default = "true" />
-    <arg name="resolution" default = "800"/>
-    <arg name="auto_expose" default = "false"/>
+    <arg name="resolution" default = "720"/>
+    <arg name="auto_expose" default = "true"/>
     <arg name="expose_time_us" default = "25000"/>
     <arg name="iso" default = "400"/>
     <arg name="auto_awb" default = "false"/>
     <arg name="awb_value" default = "3000"/>
     <arg name="ros_defined_freq" default = "true"/>
     <arg name="sharpness_calibration_mode" default = "false"/>
-    <arg name="compressed_mode" default= "true" />
+    <arg name="compressed_mode" default= "false" />
     <arg name="enable_upside_down" default = "false"/>
 
     <node name="oak_ffc_4p_ros" pkg="oak_ffc_4p_ros" type="oak_ffc_4p_ros_node" output="screen">
