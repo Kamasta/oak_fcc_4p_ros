@@ -5,7 +5,7 @@
     <arg name="auto_expose" default = "true"/>
     <arg name="expose_time_us" default = "25000"/>
     <arg name="iso" default = "400"/>
-    <arg name="auto_awb" default = "false"/>
+    <arg name="auto_awb" default = "true"/>
     <arg name="awb_value" default = "3000"/>
     <arg name="ros_defined_freq" default = "true"/>
     <arg name="sharpness_calibration_mode" default = "false"/>
