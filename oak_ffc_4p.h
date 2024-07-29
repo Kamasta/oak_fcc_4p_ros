@@ -94,20 +94,20 @@ class FFC4PDriver {
        std::string("CAM_A"), true},  //
       {dai::CameraBoardSocket::CAM_B,
        dai::ColorCameraProperties::SensorResolution::THE_720_P,
-       std::string("CAM_B"), false},
+       std::string("CAM_D"), false},
       {dai::CameraBoardSocket::CAM_C,
        dai::ColorCameraProperties::SensorResolution::THE_720_P,
        std::string("CAM_C"), false},
       {dai::CameraBoardSocket::CAM_D,
        dai::ColorCameraProperties::SensorResolution::THE_720_P,
-       std::string("CAM_D"), false}};
+       std::string("CAM_B"), false}};
 
   FFC4PDriver(std::shared_ptr<ros::NodeHandle>& nh);
   ~FFC4PDriver();
   void GetParameters(ros::NodeHandle& nh);
   int32_t Init();
   void StartVideoStream();
-  void GrapThreadJoin() { grab_thread_.join();imu_thread_.join(); };
+  // void GrapThreadJoin() { grab_thread_.join();imu_thread_.join(); };
   void StopVideoStream() {
     is_run_ = false;
     return;
@@ -116,13 +116,13 @@ class FFC4PDriver {
  private:
   void RosGrabImgThread();
   void StdGrabImgThread();
-  void IMUThread();
+  // void IMUThread();
   void GrabImg();
   void ShowImg(ImagePubNode& image_node,
                std::chrono::_V2::steady_clock::time_point& time_now);
 
   ros::Publisher expose_time_publisher_;
-  ros::Publisher imu_ros_publisher_;
+  // ros::Publisher imu_ros_publisher_;
   ros::Publisher assemble_image_publisher_;  // to publish all camera images in
 
   std::unique_ptr<dai::Pipeline> pipeline_ = nullptr;
@@ -147,7 +147,7 @@ class FFC4PDriver {
 
   // thread
   std::thread grab_thread_;
-  std::thread imu_thread_;
+  // std::thread imu_thread_;
   bool is_run_ = true;
   // image_tmp
 };

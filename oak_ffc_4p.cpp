@@ -28,10 +28,10 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 
-#include "sensor_msgs/Imu.h"
-#include "depthai/pipeline/node/IMU.hpp"
-#include "geometry_msgs/Quaternion.h"
-#include "tf2_geometry_msgs/tf2_geometry_msgs.h"
+// #include "sensor_msgs/Imu.h"
+// #include "depthai/pipeline/node/IMU.hpp"
+// #include "geometry_msgs/Quaternion.h"
+// #include "tf2_geometry_msgs/tf2_geometry_msgs.h"
 
 #define SECOND 1000000
 #define IMAGE_WIDTH 1280
@@ -173,15 +173,15 @@ int32_t FFC4PDriver::Init() {
     }
   }
 
-  auto imu = this->pipeline_->create<dai::node::IMU>();
-  auto xoutImu = this->pipeline_->create<dai::node::XLinkOut>();
-  xoutImu->setStreamName("imu");
-  imu->enableIMUSensor(dai::IMUSensor::ROTATION_VECTOR, 400);
-  imu->enableIMUSensor(dai::IMUSensor::ACCELEROMETER_RAW, 500);
-  imu->enableIMUSensor(dai::IMUSensor::GYROSCOPE_RAW, 400);
-  imu->setBatchReportThreshold(1);
-  imu->setMaxBatchReports(10);  // Get one message only for now.
-  imu->out.link(xoutImu->input);
+  // auto imu = this->pipeline_->create<dai::node::IMU>();
+  // auto xoutImu = this->pipeline_->create<dai::node::XLinkOut>();
+  // xoutImu->setStreamName("imu");
+  // imu->enableIMUSensor(dai::IMUSensor::ROTATION_VECTOR, 400);
+  // imu->enableIMUSensor(dai::IMUSensor::ACCELEROMETER_RAW, 500);
+  // imu->enableIMUSensor(dai::IMUSensor::GYROSCOPE_RAW, 400);
+  // imu->setBatchReportThreshold(1);
+  // imu->setMaxBatchReports(10);  // Get one message only for now.
+  // imu->out.link(xoutImu->input);
 	
   this->device_->startPipeline(*this->pipeline_);
 
@@ -207,7 +207,7 @@ int32_t FFC4PDriver::Init() {
               "/oak_ffc_4p/assemble_image", 1);
     }
   }
-  this->imu_ros_publisher_ = this->ros_node_->advertise<sensor_msgs::Imu>("/oak_ffc_4p/imu/data",1);
+  // this->imu_ros_publisher_ = this->ros_node_->advertise<sensor_msgs::Imu>("/oak_ffc_4p/imu/data",1);
   return 0;
 }
 
@@ -215,7 +215,7 @@ void FFC4PDriver::StartVideoStream() {
   if (this->module_config_.ros_defined_freq) {
     this->ros_rate_ptr_ = std::make_unique<ros::Rate>(this->module_config_.fps);
     this->grab_thread_ = std::thread(&FFC4PDriver::RosGrabImgThread, this);
-    this->imu_thread_ = std::thread(&FFC4PDriver::IMUThread,this);
+    // this->imu_thread_ = std::thread(&FFC4PDriver::IMUThread,this);
   } else {
     printf("Use std thread\n");
     this->grab_thread_ = std::thread(&FFC4PDriver::StdGrabImgThread, this);
@@ -232,45 +232,45 @@ void FFC4PDriver::RosGrabImgThread() {
   ROS_INFO("Stop grab tread\n");
 }
 
-void FFC4PDriver::IMUThread(){
-	auto imuQueue = this->device_->getOutputQueue("imu", 1, false);
-	// auto baseTs = std::chrono::time_point<std::chrono::steady_clock, std::chrono::steady_clock::duration>();
-	sensor_msgs::Imu imu_msg;
-	imu_msg.header.frame_id = "base_link";
-	ros::Rate loop_rate(100);
-	while(this->is_run_){
-		auto imuData = imuQueue->get<dai::IMUData>();
-		auto imuPackets = imuData->packets;
-		if (!imuPackets.empty()) {
-			auto& imuPacket = imuPackets[0];
-            auto& rVvalues = imuPacket.rotationVector;
-            auto& acceleroValues = imuPacket.acceleroMeter;
-            auto& gyroValues = imuPacket.gyroscope;
+// void FFC4PDriver::IMUThread(){
+// 	auto imuQueue = this->device_->getOutputQueue("imu", 1, false);
+// 	// auto baseTs = std::chrono::time_point<std::chrono::steady_clock, std::chrono::steady_clock::duration>();
+// 	sensor_msgs::Imu imu_msg;
+// 	imu_msg.header.frame_id = "base_link";
+// 	ros::Rate loop_rate(100);
+// 	while(this->is_run_){
+// 		auto imuData = imuQueue->get<dai::IMUData>();
+// 		auto imuPackets = imuData->packets;
+// 		if (!imuPackets.empty()) {
+// 			auto& imuPacket = imuPackets[0];
+//             auto& rVvalues = imuPacket.rotationVector;
+//             auto& acceleroValues = imuPacket.acceleroMeter;
+//             auto& gyroValues = imuPacket.gyroscope;
 
-            // auto acceleroTs = acceleroValues.getTimestampDevice() - baseTs;
-            // auto gyroTs = gyroValues.getTimestampDevice() - baseTs;
-            // auto rvTs = rVvalues.getTimestampDevice() - baseTs;
+//             // auto acceleroTs = acceleroValues.getTimestampDevice() - baseTs;
+//             // auto gyroTs = gyroValues.getTimestampDevice() - baseTs;
+//             // auto rvTs = rVvalues.getTimestampDevice() - baseTs;
 			
-			imu_msg.header.stamp = ros::Time::now();
+// 			imu_msg.header.stamp = ros::Time::now();
 
-			// 转换为IMU消息中所需的四元数形式
-			imu_msg.orientation = tf2::toMsg(tf2::Quaternion(rVvalues.i,rVvalues.j,rVvalues.k,rVvalues.real));
+// 			// 转换为IMU消息中所需的四元数形式
+// 			imu_msg.orientation = tf2::toMsg(tf2::Quaternion(rVvalues.i,rVvalues.j,rVvalues.k,rVvalues.real));
 
-			// 设置角速度
-			imu_msg.angular_velocity.x = gyroValues.x;  // 示例角速度
-			imu_msg.angular_velocity.y = gyroValues.y;
-			imu_msg.angular_velocity.z = gyroValues.z;
+// 			// 设置角速度
+// 			imu_msg.angular_velocity.x = gyroValues.x;  // 示例角速度
+// 			imu_msg.angular_velocity.y = gyroValues.y;
+// 			imu_msg.angular_velocity.z = gyroValues.z;
 
-			// 设置线加速度
-			imu_msg.linear_acceleration.x = acceleroValues.x;  // 示例线加速度
-			imu_msg.linear_acceleration.y = acceleroValues.y;
-			imu_msg.linear_acceleration.z = acceleroValues.z;
-			this->imu_ros_publisher_.publish(imu_msg);
-		}
-		loop_rate.sleep();
-	}
-	ROS_INFO("Stop IMU thread\n");
-}
+// 			// 设置线加速度
+// 			imu_msg.linear_acceleration.x = acceleroValues.x;  // 示例线加速度
+// 			imu_msg.linear_acceleration.y = acceleroValues.y;
+// 			imu_msg.linear_acceleration.z = acceleroValues.z;
+// 			this->imu_ros_publisher_.publish(imu_msg);
+// 		}
+// 		loop_rate.sleep();
+// 	}
+// 	ROS_INFO("Stop IMU thread\n");
+// }
 
 void FFC4PDriver::StdGrabImgThread() {
   while (this->is_run_) {
