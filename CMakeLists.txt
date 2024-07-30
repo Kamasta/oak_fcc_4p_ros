@@ -50,24 +50,6 @@ link_directories(
   /dependencies/fmt-7.1.3/build
 )
 
-target_link_libraries(${PROJECT_NAME}_test
-  ${catkin_LIBRARIES}
-  ${OpenCV_LIBRARIES}
-  depthai::opencv
-  depthai-core
-  XLink
-  spdlog
-  fmt::fmt
-  pthread
-)
-
-target_include_directories(${PROJECT_NAME}_test PUBLIC
-  ${catkin_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
-  /dependencies/depthai-core/build/install/include
-  /dependencies/XLink/build/install/include
-)
-
 add_library(${PROJECT_NAME}_lib STATIC
   oak_ffc_4p.cpp
 )
